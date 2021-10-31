@@ -580,10 +580,10 @@ le = LabelEncoder()
 for col in df_Cl.columns:
       if df_Cl[col].dtypes == object:
           df_Cl[col] = le.fit_transform(df_Cl[col])
-y = df_Cl["hour"]
-X = df_Cl.drop("hour", axis='columns')
+y = df_Cl["Spectacles"]
+X = df_Cl.drop("Spectacles", axis='columns')
 
-KMean = KMeans(n_clusters=5)
+KMean = KMeans(n_clusters=4)
 KMean.fit(X)
 label=KMean.predict(X)
 
@@ -591,7 +591,7 @@ df_Cl['label']=label
 df_Cl
 
 distortions = []
-for i in range(1,25):
+for i in range(1,11):
 	km = KMeans(
 		n_clusters=i, init='random',
 		n_init=10, max_iter=300,
@@ -600,24 +600,24 @@ for i in range(1,25):
 	km.fit(X)
 	distortions.append(km.inertia_)
 
-plt.plot(range(1,25), distortions, marker='o')
+plt.plot(range(1,11), distortions, marker='o')
 plt.xlabel('Number of clusters')
 plt.ylabel('Distortion')
 plt.show()
 st.pyplot()
 
 from kneed import KneeLocator
-kl = KneeLocator(range(1, 25), distortions, curve="convex", direction="decreasing")
+kl = KneeLocator(range(1, 11), distortions, curve="convex", direction="decreasing")
 kl.elbow
 
 df_new = df_Cl.copy()
-df_new = df_new.drop("hour", axis=1)
-df_new["hour"]=km.labels_
+df_new = df_new.drop("Spectacles", axis=1)
+df_new["Spectacles"]=label
 
-st.markdown("In the graph below, customers at age 25 to 38 prefers to go to the laundry at midnight and evenings, customers at age 45 to 55 prefers to go at early morning. ")
+st.markdown("In the graph below, customers at age 30 to 40 prefers to go to the laundry at 10am to 11pm, customers at age 30 to 40 prefers to go at 12am to 12pm and customers at age 40 to 60 goes at 1pm to 11pm. ")
 
 fig, axes = plt.subplots(1, 2, figsize=(13,6))
 
-sns.scatterplot(x="Age_Range", y="hour", data=df_Cl, ax=axes[0], hue="hour")
-sns.scatterplot(x="Age_Range", y="hour", data=df_new, ax=axes[1], hue="hour")
+sns.scatterplot(x="Age_Range", y="hour", data=df_Cl, ax=axes[0], hue="Spectacles")
+sns.scatterplot(x="Age_Range", y="hour", data=df_new, ax=axes[1], hue="Spectacles")
 st.pyplot()
