@@ -508,7 +508,6 @@ X = df_FS.drop('Washer_No', axis='columns')
 X_train,X_test,y_train,y_test=train_test_split(X,y, test_size=0.1, random_state=14)
 
 st.subheader("Ridge Regression")
-st.markdown("Explanation.")
 model = Ridge()
 model.fit(X_train, y_train)
 train_score=model.score(X_train,y_train)
@@ -608,13 +607,13 @@ st.pyplot()
 
 from kneed import KneeLocator
 kl = KneeLocator(range(1, 11), distortions, curve="convex", direction="decreasing")
-kl.elbow
+st.markdown("Elbow Criterion: " + str(kl.elbow))
 
 df_new = df_Cl.copy()
 df_new = df_new.drop("Spectacles", axis=1)
 df_new["Spectacles"]=label
 
-st.markdown("In the graph below, customers at age 30 to 40 prefers to go to the laundry at 10am to 11pm, customers at age 30 to 40 prefers to go at 12am to 12pm and customers at age 40 to 60 goes at 1pm to 11pm. ")
+st.markdown("For example, the first cluster shows age range between 30 to 40 with hour of 0 to 10. Second cluster shows age range between 30 to 40 with hour of 11 to 23. Third cluster shows age range between 40 to 60 with hour of 0 to 12. The last cluster shows age range between 40 to 60 with hour of 13 to 23. ")
 
 fig, axes = plt.subplots(1, 2, figsize=(13,6))
 
