@@ -565,3 +565,60 @@ plt.show()
 st.pyplot()
 st.markdown("Answer")
 
+st.header("Clustering")
+st.markdown("For convenience purpose, we read the laundrydata again to obtain specific data.")
+from sklearn.cluster import KMeans 
+df = pd.read_csv("LaundryData.csv")
+df['datetime'] = pd.to_datetime(df['Time'])
+df['hour'] = df['datetime'].dt.hour
+df_Cl = df.copy()
+df_Cl = df_Cl.drop(columns=['No','datetime'])
+df_Cl = df_Cl.drop(columns=['Date', 'Time'])
+df_Cl = df_Cl.dropna()
+
+le = LabelEncoder()
+
+for col in df_Cl.columns:
+      if df_Cl[col].dtypes == object:
+          df_Cl[col] = le.fit_transform(df_Cl[col])
+y = df_Cl["hour"]
+X = df_Cl.drop("hour", axis='columns')
+
+KMean = KMeans(n_clusters=5)
+KMean.fit(X)
+label=KMean.predict(X)
+
+df_Cl['label']=label
+df_Cl
+
+distortions = []
+for i in range(1,25):
+	km = KMeans(
+		n_clusters=i, init='random',
+		n_init=10, max_iter=300,
+		tol=1e-04, random_state=1
+	)
+	km.fit(X)
+	distortions.append(km.inertia_)
+
+plt.plot(range(1,25), distortions, marker='o')
+plt.xlabel('Number of clusters')
+plt.ylabel('Distortion')
+plt.show()
+st.pyplot()
+
+from kneed import KneeLocator
+kl = KneeLocator(range(1, 25), distortions, curve="convex", direction="decreasing")
+kl.elbow
+
+df_new = df_Cl.copy()
+df_new = df_new.drop("hour", axis=1)
+df_new["hour"]=km.labels_
+
+st.markdown("In the graph below, customers at age 25 to 38 prefers to go to the laundry at midnight and evenings, customers at age 45 to 55 prefers to go at early morning. ")
+
+fig, axes = plt.subplots(1, 2, figsize=(13,6))
+
+sns.scatterplot(x="Age_Range", y="hour", data=df_Cl, ax=axes[0], hue="hour")
+sns.scatterplot(x="Age_Range", y="hour", data=df_new, ax=axes[1], hue="hour")
+st.pyplot()
