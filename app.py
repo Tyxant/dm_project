@@ -154,6 +154,8 @@ st.markdown("Answer: Female Malays come the most. In terms of male, the Indians 
 st.subheader("Data Pre-Processing")
 st.markdown("At this part, we removed data that we will not be using anymore, and filled up some empty data.")
 st.markdown("In this case, we removed 'No', 'Date', and 'Time'. Then, we fill up the empty data under 'With_Kids' and 'Kids_Category' which if With_Kids is 'no', then the empty data in Kids_Category will be 'no_kids'. If the data in 'With_Kids' is 'yes', then the 'Kids_Category' will be filled with 'unknown', because we cannot determine the exact category of the kid, but we do know the customer has kid(s). ")
+st.markdown("Null race values are also replaced with 'others' under the assumption that they are within the 3 main races in Malaysia but not under the category of foreigners")
+st.markdown("Null gender values are replaced with 'unknown' as there might be those that choses not to reveal their gender or look androgynous")
 df = df.drop(columns=['No'])
 df = df.drop(columns=['Date', 'Time'])
 
