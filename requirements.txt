@@ -9,3 +9,4 @@ boruta
 sklearn
 streamlit_folium
 apyori
+kneed
