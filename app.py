@@ -520,7 +520,6 @@ st.markdown("Mean Squared Error: " + str(math.sqrt(mean_squared_error(y_test, y_
 
 
 st.subheader("Random Forest Regressor")
-st.markdown("Explanation.")
 lg = RandomForestRegressor()
 
 lg.fit(X_train, y_train)
@@ -535,7 +534,6 @@ st.markdown("Mean Squared Error: " + str(math.sqrt(mean_squared_error(y_test, y_
 
 
 st.subheader("Polynomial Regression")
-st.markdown("Explanation.")
 poly = PolynomialFeatures(degree = 2)
 X_poly = poly.fit_transform(X)
   
@@ -551,7 +549,7 @@ st.markdown("Mean Squared Error: " + str(math.sqrt(mean_squared_error(y_test, y_
 
 
 st.subheader("Comparison of the 3 regression models")
-st.markdown("Explanation.")
+st.markdown("After running all 3 models, Polynomial Regression has the least mean squared error.")
 fig, axes = plt.subplots(figsize=(15,5), dpi=100)
 plt.plot([n for n in range(len(X_test))], y_test, label='Actual')
 plt.plot([n for n in range(len(X_test))], y_predictR, label='Ridge')
@@ -563,7 +561,6 @@ plt.grid()
 plt.legend()
 plt.show()
 st.pyplot()
-st.markdown("Answer")
 
 st.header("Clustering")
 st.markdown("For convenience purpose, we read the laundrydata again to obtain specific data.")
